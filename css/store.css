@@ -505,3 +505,204 @@
     .form-actions { grid-template-columns: 1fr; }
     .risk-card { padding: 24px; }
 }
+
+
+/* ── Two-button payment group on product cards ── */
+.product-buy-group {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.btn-buy {
+    padding: 10px 14px;
+    min-height: 42px;
+    font-size: 13px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+    transition: all .2s ease;
+    white-space: nowrap;
+    border: none;
+    cursor: pointer;
+}
+.btn-buy:hover { transform: translateY(-1px); }
+
+.btn-gold.btn-buy {
+    background: var(--gold);
+    color: #000;
+}
+.btn-gold.btn-buy:hover { background: var(--gold-light); }
+
+.btn-eft {
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    color: var(--muted-2);
+}
+.btn-eft:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+}
+
+/* Stack price above buttons on narrow cards */
+.product-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+/* ── Payment method note in modal ── */
+.modal-payment-method {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gold);
+    background: var(--gold-dim);
+    border: 1px solid rgba(201,149,42,.25);
+    border-radius: 999px;
+    padding: 5px 12px;
+    margin-bottom: 20px;
+}
+
+/* ── Responsive: stack buy buttons on very small screens ── */
+@media (max-width: 360px) {
+    .product-buy-group { flex-direction: column; }
+    .btn-buy { width: 100%; justify-content: center; }
+}
+
+/* ── Premium indicators section ── */
+.vv-indicators {
+  padding: 90px 20px;
+  background: #0b0d12;
+  color: #ffffff;
+}
+
+.vv-indicators__inner {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.vv-section-heading {
+  max-width: 720px;
+  margin-bottom: 34px;
+}
+
+.vv-eyebrow {
+  display: inline-block;
+  margin-bottom: 12px;
+  color: #f4c542;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.vv-section-heading h2 {
+  margin: 0 0 14px;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.05;
+}
+
+.vv-section-heading p {
+  margin: 0;
+  color: #c9ced8;
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+
+.vv-indicator-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.vv-indicator-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding: 26px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  background: #121722;
+}
+
+.vv-indicator-card__top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.vv-status,
+.vv-price {
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.vv-status {
+  color: #0b0d12;
+  background: #f4c542;
+  padding: 7px 10px;
+  border-radius: 999px;
+}
+
+.vv-status--notify {
+  background: #72e6ac;
+}
+
+.vv-price {
+  color: #d8deea;
+}
+
+.vv-indicator-card h3 {
+  margin: 0 0 12px;
+  font-size: 1.35rem;
+}
+
+.vv-indicator-card p {
+  margin: 0 0 18px;
+  color: #c9ced8;
+  line-height: 1.6;
+}
+
+.vv-indicator-card ul {
+  margin: 0 0 24px;
+  padding-left: 18px;
+  color: #e6eaf2;
+  line-height: 1.8;
+}
+
+.vv-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: auto;
+  min-height: 46px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 6px;
+  background: #f4c542;
+  color: #0b0d12;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.vv-btn--disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+  .vv-indicator-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vv-indicators {
+    padding: 64px 18px;
+  }
+}

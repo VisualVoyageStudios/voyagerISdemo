@@ -1,46 +1,50 @@
 'use strict';
 
 const CONFIG = {
-    email:     'visualvoyagebsn@gmail.com',
-    whatsapp:  '27814758138',   // digits only, international format
+    email:    'visualvoyagebsn@gmail.com',
+    whatsapp: '27814758138',
 };
 
-// ── Product catalogue ───────────────────────────────────────────────────────
-// Set checkoutUrl to your Lemon Squeezy hosted checkout link once ready.
-// Leave it empty ('') to fall back to the manual order modal.
+// ── Product catalogue ────────────────────────────────────────────────────────
+// cardUrl  → Lemon Squeezy hosted checkout link (card payment)
+// eftUrl   → Ozow payment link (instant EFT)
+// Leave either empty ('') to fall back to the manual order modal.
 const PRODUCTS = [
     {
-        id: 'momentum-pulse',
-        name: 'Momentum Pulse',
-        type: 'indicator',
-        tagline: 'Trend strength, without the lag',
+        id:          'momentum-pulse',
+        name:        'Momentum Pulse',
+        type:        'indicator',
+        tagline:     'Trend strength, without the lag',
         description: 'Cuts through market noise to surface genuine momentum build-up before the obvious move happens — not after.',
-        features: ['Filters chop and low-conviction ranges', 'Clear chart overlay', 'Works across timeframes'],
-        price: 450,
-        billing: 'once-off',
-        checkoutUrl: '',
+        features:    ['Filters chop and low-conviction ranges', 'Clear chart overlay', 'Works across timeframes'],
+        price:       450,
+        billing:     'once-off',
+        cardUrl:     '', // paste Lemon Squeezy checkout URL here
+        eftUrl:      '', // paste Ozow payment link here
     },
     {
-        id: 'liquidity-zones-pro',
-        name: 'Liquidity Zones Pro',
-        type: 'indicator',
-        tagline: 'See where price is likely to react before it gets there',
+        id:          'liquidity-zones-pro',
+        name:        'Liquidity Zones Pro',
+        type:        'indicator',
+        tagline:     'See where price is likely to react before it gets there',
         description: 'Maps high-probability reaction areas using volume and price-action behaviour — so you have context, not just a line.',
-        features: ['Dynamic zone detection', 'Adjustable sensitivity', 'Works on any liquid market'],
-        price: 650,
-        billing: 'once-off',
-        checkoutUrl: '',
+        features:    ['Dynamic zone detection', 'Adjustable sensitivity', 'Works on any liquid market'],
+        price:       650,
+        billing:     'once-off',
+        cardUrl:     '',
+        eftUrl:      '',
     },
     {
-        id: 'smart-trend-filter',
-        name: 'Smart Trend Filter',
-        type: 'strategy',
-        tagline: 'A full trend-following system you can backtest',
-        description: 'Entry, exit, and risk logic built into one strategy — so you can run it against your own markets and timeframes before committing any real capital.',
-        features: ['Entry and exit logic included', 'Risk-rule structure', 'Backtest-ready on TradingView'],
-        price: 120,
-        billing: 'month',
-        checkoutUrl: '',
+        id:          'smart-trend-filter',
+        name:        'Smart Trend Filter',
+        type:        'strategy',
+        tagline:     'A full trend-following system you can backtest',
+        description: 'Entry, exit, and risk logic built into one strategy — backtest it on your own markets and timeframes before committing capital.',
+        features:    ['Entry and exit logic included', 'Risk-rule structure', 'Backtest-ready on TradingView'],
+        price:       120,
+        billing:     'month',
+        cardUrl:     '',
+        eftUrl:      '',
     },
 ];
 
@@ -54,6 +58,10 @@ const FAQS = [
         a: 'Access is granted manually to your TradingView username, usually within a few hours. You\'ll see the script appear under your "Invite-only scripts" tab once it\'s added.',
     },
     {
+        q: 'What payment methods are accepted?',
+        a: 'Card payments (Visa, Mastercard) are handled by Lemon Squeezy. South African instant EFT payments are handled by Ozow — pay directly from your bank account, no card needed.',
+    },
+    {
         q: 'What if I entered the wrong TradingView username?',
         a: 'Just get in touch with the correct one. Access is tied to the username — it\'s an easy fix before it\'s been granted.',
     },
@@ -65,41 +73,43 @@ const FAQS = [
         q: 'How do refunds work?',
         a: 'Reach out before access is granted and it\'ll be handled quickly. Once access is active, refunds are handled case-by-case.',
     },
-    {
-        q: 'Can I use these alongside my existing indicators?',
-        a: 'Yes. Each script is a standalone TradingView tool — add it to any chart alongside whatever else you already use.',
-    },
 ];
 
-// ── SVG icons (keyed to product id) ─────────────────────────────────────────
 const ICONS = {
-    'momentum-pulse': `<svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,13 6,8 10,15 14,5 18,11 20,11"/></svg>`,
+    'momentum-pulse':      `<svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,13 6,8 10,15 14,5 18,11 20,11"/></svg>`,
     'liquidity-zones-pro': `<svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2" y="4" width="18" height="3" rx="1"/><rect x="2" y="10" width="18" height="2" rx="1" opacity=".5"/><rect x="2" y="16" width="18" height="3" rx="1"/></svg>`,
-    'smart-trend-filter': `<svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,17 8,11 12,14 19,5"/><polyline points="15,5 19,5 19,9"/></svg>`,
+    'smart-trend-filter':  `<svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,17 8,11 12,14 19,5"/><polyline points="15,5 19,5 19,9"/></svg>`,
 };
 
 // ── State ────────────────────────────────────────────────────────────────────
-let activeFilter   = 'all';
-let activeProduct  = null;
-let returnFocus    = null;
+let activeFilter  = 'all';
+let activeProduct = null;
+let activeMethod  = null; // 'card' | 'eft'
+let returnFocus   = null;
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
-function formatPrice(product) {
-    const r = `R${product.price.toLocaleString('en-ZA')}`;
-    return product.billing === 'once-off' ? r : `${r}<span class="product-price-note">per month</span>`;
-}
-
 function esc(str) {
-    return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+    return String(str).replace(/[&<>"']/g, c => (
+        {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]
+    ));
 }
 
-// ── Render product grid ──────────────────────────────────────────────────────
+function formatPrice(p) {
+    const r = `R${p.price.toLocaleString('en-ZA')}`;
+    return p.billing === 'once-off'
+        ? `${r}<span class="product-price-note">once-off</span>`
+        : `${r}<span class="product-price-note">per month</span>`;
+}
+
+// ── Render products ──────────────────────────────────────────────────────────
 function renderProducts() {
-    const grid = document.getElementById('productGrid');
+    const grid  = document.getElementById('productGrid');
     const count = document.getElementById('libraryCount');
     const empty = document.getElementById('emptyState');
 
-    const filtered = PRODUCTS.filter(p => activeFilter === 'all' || p.type === activeFilter);
+    const filtered = PRODUCTS.filter(p =>
+        activeFilter === 'all' || p.type === activeFilter
+    );
 
     count.textContent = PRODUCTS.length;
 
@@ -121,18 +131,35 @@ function renderProducts() {
                 ${p.features.map(f => `<li>${esc(f)}</li>`).join('')}
             </ul>
             <div class="product-footer">
-                <div>
-                    <div class="product-price">${formatPrice(p)}</div>
+                <div class="product-price">${formatPrice(p)}</div>
+                <div class="product-buy-group">
+                    <button
+                        class="btn btn-gold btn-buy"
+                        type="button"
+                        data-product-id="${esc(p.id)}"
+                        data-method="card"
+                        title="Pay by card via Lemon Squeezy"
+                    >
+                        <svg width="14" height="14" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="18" height="14" rx="2"/><path d="M2 10h18"/></svg>
+                        Card
+                    </button>
+                    <button
+                        class="btn btn-eft btn-buy"
+                        type="button"
+                        data-product-id="${esc(p.id)}"
+                        data-method="eft"
+                        title="Pay by instant EFT via Ozow"
+                    >
+                        <svg width="14" height="14" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11h18M3 11l4-4M3 11l4 4M19 7v8"/></svg>
+                        EFT
+                    </button>
                 </div>
-                <button class="btn btn-gold" type="button" data-product-id="${esc(p.id)}">
-                    Buy Now
-                </button>
             </div>
         </article>
     `).join('');
 }
 
-// ── FAQ ──────────────────────────────────────────────────────────────────────
+// ── Render FAQ ───────────────────────────────────────────────────────────────
 function renderFAQs() {
     const list = document.getElementById('faqList');
     list.innerHTML = FAQS.map((item, i) => `
@@ -151,20 +178,19 @@ function renderFAQs() {
 }
 
 // ── Modal ────────────────────────────────────────────────────────────────────
-function openModal(productId) {
-    const product = PRODUCTS.find(p => p.id === productId);
-    if (!product) return;
-
-    if (product.checkoutUrl) {
-        window.location.href = product.checkoutUrl;
-        return;
-    }
-
+function openModal(product, method) {
     activeProduct = product;
-    returnFocus = document.activeElement;
+    activeMethod  = method;
+    returnFocus   = document.activeElement;
+
+    const methodLabel = method === 'eft' ? 'Instant EFT (Ozow)' : 'Card (Lemon Squeezy)';
+    const billing     = product.billing === 'once-off' ? 'once-off' : 'per month';
 
     document.getElementById('modalProductName').textContent =
-        `${product.name} — R${product.price.toLocaleString('en-ZA')} ${product.billing === 'once-off' ? 'once-off' : 'per month'}`;
+        `${product.name} — R${product.price.toLocaleString('en-ZA')} ${billing}`;
+
+    document.getElementById('modalPaymentMethod').textContent =
+        `Payment method: ${methodLabel}`;
 
     const modal = document.getElementById('orderModal');
     modal.hidden = false;
@@ -176,21 +202,26 @@ function openModal(productId) {
 }
 
 function closeModal() {
-    const modal = document.getElementById('orderModal');
-    modal.hidden = true;
+    document.getElementById('orderModal').hidden = true;
     document.body.classList.remove('no-scroll');
     document.getElementById('orderForm').reset();
     activeProduct = null;
+    activeMethod  = null;
     if (returnFocus) returnFocus.focus();
 }
 
 function buildMessage(username, email) {
-    const p = activeProduct;
+    const methodLabel = activeMethod === 'eft'
+        ? 'Instant EFT (Ozow)'
+        : 'Card (Lemon Squeezy)';
+    const billing = activeProduct.billing === 'once-off' ? 'once-off' : 'per month';
+
     return [
         'Hi,',
         '',
-        `I would like access to: ${p.name}`,
-        `Price: R${p.price.toLocaleString('en-ZA')} (${p.billing})`,
+        `I would like access to: ${activeProduct.name}`,
+        `Price: R${activeProduct.price.toLocaleString('en-ZA')} (${billing})`,
+        `Preferred payment method: ${methodLabel}`,
         `TradingView username: ${username}`,
         `Email: ${email}`,
         '',
@@ -212,14 +243,36 @@ function handleOrderSubmit(e) {
 
 function handleWhatsapp() {
     if (!activeProduct) return;
-    const username = document.getElementById('fieldUsername').value.trim();
-    const email    = document.getElementById('fieldEmail').value.trim();
+    const usernameEl = document.getElementById('fieldUsername');
+    const emailEl    = document.getElementById('fieldEmail');
+    if (!usernameEl.reportValidity() || !emailEl.reportValidity()) return;
 
-    if (!document.getElementById('fieldUsername').reportValidity()) return;
-    if (!document.getElementById('fieldEmail').reportValidity()) return;
+    const msg = encodeURIComponent(
+        buildMessage(usernameEl.value.trim(), emailEl.value.trim())
+    );
+    window.open(
+        `https://wa.me/${CONFIG.whatsapp}?text=${msg}`,
+        '_blank',
+        'noopener,noreferrer'
+    );
+}
 
-    const msg = encodeURIComponent(buildMessage(username, email));
-    window.open(`https://wa.me/${CONFIG.whatsapp}?text=${msg}`, '_blank', 'noopener,noreferrer');
+// ── Buy handler ──────────────────────────────────────────────────────────────
+function handleBuy(productId, method) {
+    const product = PRODUCTS.find(p => p.id === productId);
+    if (!product) return;
+
+    if (method === 'card' && product.cardUrl) {
+        window.location.href = product.cardUrl;
+        return;
+    }
+    if (method === 'eft' && product.eftUrl) {
+        window.location.href = product.eftUrl;
+        return;
+    }
+
+    // No URL yet — open manual order modal
+    openModal(product, method);
 }
 
 // ── Events ───────────────────────────────────────────────────────────────────
@@ -243,17 +296,19 @@ function setupEvents() {
     // Filter buttons
     document.querySelectorAll('[data-filter]').forEach(btn => {
         btn.addEventListener('click', () => {
-            document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('[data-filter]').forEach(b =>
+                b.classList.remove('active')
+            );
             btn.classList.add('active');
             activeFilter = btn.dataset.filter;
             renderProducts();
         });
     });
 
-    // Buy buttons (delegated)
+    // Buy buttons (delegated — both card and EFT)
     document.getElementById('productGrid').addEventListener('click', e => {
         const btn = e.target.closest('[data-product-id]');
-        if (btn) openModal(btn.dataset.productId);
+        if (btn) handleBuy(btn.dataset.productId, btn.dataset.method);
     });
 
     // FAQ accordion (delegated)
@@ -266,13 +321,19 @@ function setupEvents() {
     });
 
     // Modal
-    document.querySelector('[data-modal-close]').addEventListener('click', closeModal);
-    document.querySelector('[data-modal-backdrop]').addEventListener('click', closeModal);
-    document.getElementById('orderForm').addEventListener('submit', handleOrderSubmit);
-    document.getElementById('btnWhatsapp').addEventListener('click', handleWhatsapp);
+    document.querySelector('[data-modal-close]')
+        .addEventListener('click', closeModal);
+    document.querySelector('[data-modal-backdrop]')
+        .addEventListener('click', closeModal);
+    document.getElementById('orderForm')
+        .addEventListener('submit', handleOrderSubmit);
+    document.getElementById('btnWhatsapp')
+        .addEventListener('click', handleWhatsapp);
 
     document.addEventListener('keydown', e => {
-        if (e.key === 'Escape' && !document.getElementById('orderModal').hidden) closeModal();
+        if (e.key === 'Escape' && !document.getElementById('orderModal').hidden) {
+            closeModal();
+        }
     });
 }
 

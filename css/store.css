@@ -574,44 +574,26 @@
     .btn-buy { width: 100%; justify-content: center; }
 }
 
-/* ── Premium indicators section ── */
+/* ── "What's Next" roadmap section ──
+   Colors now use the site's shared design tokens (css/global.css)
+   instead of one-off hex values, so this section matches the rest
+   of the page instead of looking like a pasted-in block. */
 .vv-indicators {
   padding: 90px 20px;
-  background: #0b0d12;
-  color: #ffffff;
+  background: var(--bg-2);
+  color: var(--text);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }
 
 .vv-indicators__inner {
-  max-width: 1180px;
+  max-width: var(--container);
   margin: 0 auto;
 }
 
 .vv-section-heading {
   max-width: 720px;
   margin-bottom: 34px;
-}
-
-.vv-eyebrow {
-  display: inline-block;
-  margin-bottom: 12px;
-  color: #f4c542;
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.vv-section-heading h2 {
-  margin: 0 0 14px;
-  font-size: clamp(2rem, 4vw, 3.2rem);
-  line-height: 1.05;
-}
-
-.vv-section-heading p {
-  margin: 0;
-  color: #c9ced8;
-  font-size: 1.05rem;
-  line-height: 1.65;
 }
 
 .vv-indicator-grid {
@@ -625,9 +607,14 @@
   flex-direction: column;
   min-height: 100%;
   padding: 26px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 8px;
-  background: #121722;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+  transition: border-color .2s, background .2s;
+}
+.vv-indicator-card:hover {
+  border-color: rgba(201,149,42,.3);
+  background: var(--card-hover);
 }
 
 .vv-indicator-card__top {
@@ -644,36 +631,40 @@
 }
 
 .vv-status {
-  color: #0b0d12;
-  background: #f4c542;
+  color: #000;
+  background: var(--gold);
   padding: 7px 10px;
   border-radius: 999px;
 }
 
 .vv-status--notify {
-  background: #72e6ac;
+  background: #6FE3A8;
 }
 
 .vv-price {
-  color: #d8deea;
+  color: var(--muted-2);
 }
 
 .vv-indicator-card h3 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
   margin: 0 0 12px;
   font-size: 1.35rem;
+  color: var(--text);
 }
 
 .vv-indicator-card p {
   margin: 0 0 18px;
-  color: #c9ced8;
+  color: var(--muted-2);
   line-height: 1.6;
+  font-size: 13.5px;
 }
 
 .vv-indicator-card ul {
   margin: 0 0 24px;
   padding-left: 18px;
-  color: #e6eaf2;
+  color: var(--muted-2);
   line-height: 1.8;
+  font-size: 13px;
 }
 
 .vv-btn {
@@ -684,18 +675,24 @@
   min-height: 46px;
   padding: 0 18px;
   border: 0;
-  border-radius: 6px;
-  background: #f4c542;
-  color: #0b0d12;
-  font-weight: 800;
+  border-radius: 10px;
+  background: var(--gold);
+  color: #000;
+  font-weight: 700;
+  font-size: 14px;
   text-decoration: none;
   cursor: pointer;
+  transition: background .2s;
 }
+.vv-btn:hover { background: var(--gold-light); }
 
 .vv-btn--disabled {
-  opacity: 0.55;
+  background: var(--border);
+  color: var(--muted);
+  opacity: 1;
   cursor: not-allowed;
 }
+.vv-btn--disabled:hover { background: var(--border); }
 
 @media (max-width: 900px) {
   .vv-indicator-grid {

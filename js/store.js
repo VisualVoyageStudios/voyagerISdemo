@@ -81,6 +81,39 @@ const ICONS = {
     'smart-trend-filter':  `<svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,17 8,11 12,14 19,5"/><polyline points="15,5 19,5 19,9"/></svg>`,
 };
 
+// ── Product preview visuals ──────────────────────────────────────────────────
+// These are stylised placeholder chart illustrations — NOT real screenshots.
+// To swap in a real chart screenshot later, just replace the .product-visual
+// innerHTML below with: <img src="images/momentum-pulse-preview.png" alt="...">
+// (or edit renderProducts() to use an <img> tag when a product has a
+// `previewImage` field set).
+const PREVIEWS = {
+    'momentum-pulse': `
+        <svg viewBox="0 0 320 140" preserveAspectRatio="none" aria-hidden="true">
+            <polyline points="0,100 30,92 60,98 90,70 120,78 150,50 180,58 210,32 240,40 270,18 300,26 320,14"
+                fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="0,110 30,108 60,112 90,104 120,106 150,96 180,98 210,88 240,90 270,80 300,82 320,76"
+                fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity=".5"/>
+        </svg>`,
+    'liquidity-zones-pro': `
+        <svg viewBox="0 0 320 140" preserveAspectRatio="none" aria-hidden="true">
+            <rect x="0" y="30" width="320" height="18" fill="var(--gold)" opacity=".14"/>
+            <rect x="0" y="86" width="320" height="14" fill="var(--gold)" opacity=".14"/>
+            <polyline points="0,90 25,85 50,95 75,60 100,72 125,40 150,55 175,38 200,64 225,44 250,30 275,50 300,20 320,35"
+                fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>`,
+    'smart-trend-filter': `
+        <svg viewBox="0 0 320 140" preserveAspectRatio="none" aria-hidden="true">
+            <polyline points="0,115 40,110 80,118 120,95 160,100 200,60 240,68 280,35 320,42"
+                fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity=".55"/>
+            <polyline points="0,115 40,110 80,118 120,95 160,100 200,60 240,68 280,35 320,42"
+                fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                stroke-dasharray="0 400" class="vv-trend-line"/>
+            <circle cx="200" cy="60" r="4.5" fill="var(--gold)"/>
+            <circle cx="280" cy="35" r="4.5" fill="var(--gold)"/>
+        </svg>`,
+};
+
 // ── State ────────────────────────────────────────────────────────────────────
 let activeFilter  = 'all';
 let activeProduct = null;
@@ -122,6 +155,10 @@ function renderProducts() {
 
     grid.innerHTML = filtered.map(p => `
         <article class="product-card">
+            <div class="product-visual">
+                <span class="product-visual-tag">Preview</span>
+                ${PREVIEWS[p.id] || ''}
+            </div>
             <div class="product-icon">${ICONS[p.id] || ICONS['momentum-pulse']}</div>
             <span class="product-type-tag ${esc(p.type)}">${esc(p.type)}</span>
             <h3 class="product-name">${esc(p.name)}</h3>

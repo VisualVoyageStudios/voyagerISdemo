@@ -1,7 +1,7 @@
 'use strict';
 
 const CONFIG = {
-    email:    'visualvoyagebsn@gmail.com',
+    email:    'visualvoyagerbsn@gmail.com',
     whatsapp: '27814758138',
 };
 
